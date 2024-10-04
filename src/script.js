@@ -2,18 +2,20 @@ import {HashMap} from "./hashmap.js";
 const test = new HashMap() // or HashMap() if using a factory
 
 test.set('apple', 'red')//10
-
-//problem: its adding above to all linked lists. - change to add link lists when adding in
 test.set('banana', 'yellow')//69
-//test.set('carrot', 'orange')
-//test.set('dog', 'brown')
-//test.set('elephant', 'gray')
-//test.set('frog', 'green')
-//test.set('grape', 'purple')
-//test.set('hat', 'black')
-//test.set('ice cream', 'white')
-//test.set('jacket', 'blue')
-//test.set('kite', 'pink')
-//test.set('lion', 'golden')
-console.log("final HashMap")
+test.set('carrot', 'orange')//71
+test.set('dog', 'brown')//44
+test.set('elephant', 'gray')//69 - linked with banana
+test.set('frog', 'green')//80
+test.set('grape', 'purple')//27
+test.set('hat', 'black')//67
+test.set('ice cream', 'white')//37
+test.set('jacket', 'blue')//26
+test.set('kite', 'pink')//39
+test.set('lion', 'golden')//84
+
+console.log("final HashMap");
 console.log(test);
+
+console.log(test.length());
+

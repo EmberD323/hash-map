@@ -19,50 +19,106 @@ class HashMap{
           hashCode = primeNumber * hashCode + key.charCodeAt(i);
           
         }
-        console.log("hash code is")
-        console.log(hashCode)
-        console.log("bucket is")
-        console.log(hashCode % this.buckets.length)
      
         return hashCode % this.buckets.length //to make hash matach buckets;
     } 
-    
-    set(newKey,newValue){
-        let thisHash = this.hash(newKey);
+    set(newKey,newValue){//comeback here and insert grow logic
 
-        console.log("bucket is")
-        console.log(this.buckets[thisHash])
+        let thisHash = this.hash(newKey);
         
         //if this bucket is empty put this in there
-        if(this.buckets[thisHash] == undefined){
+        if(this.buckets[thisHash] == undefined ){
             this.buckets[thisHash] = new LinkedList();
             this.buckets[thisHash].append({key:newKey,value:newValue});
-            console.log("when set method used i was placed in an empty bucket. My data is ")
-            console.log({key:newKey,value:newValue})
             return
         }
 
         //check if linked list had key by moving through linked list while data is not empty
         let currentNode = this.buckets[thisHash].head;
-        if(currentNode.data !== null){
+        while(currentNode !== null){
             if(currentNode.data.key == newKey){
                 currentNode.data.value = newValue;  
-                console.log("when set method used, my key was already in the bucket so i repalced the value in that bucket. My data is ")
-                console.log({key:newKey,value:newValue}) 
                 return
             }
             currentNode = currentNode.next
         }
         //there has been a collision - add to end of linked list
-        console.log("when set method used, there was already something else in my bucket so I joined the linekd list. My data is ")
-        console.log({key:newKey,value:newValue}) 
         this.buckets[thisHash].append({key:newKey,value:newValue});
         return
         
 
     }
-    get(key){
+    get(keyToFind){
         //find value assosicated with key
+        let thisHash = this.hash(keyToFind);
+        //if this bucket is empty return null
+        if(this.buckets[thisHash] == undefined){
+            return null
+        }
+        //traverse through linked list and get value
+        let currentNode = this.buckets[thisHash].head;
+        
+        while(currentNode !== null){
+
+            if(currentNode.data.key == keyToFind){
+                return currentNode.data.value;  
+            }
+            currentNode = currentNode.next
+        }
+        return null
+    }
+    has(keyToFind){
+        let value = this.get(keyToFind);
+        if(value == null){return false}
+        return true
+    }
+    remove(keyToRemove){
+        let valueToRemove = this.get(keyToRemove);
+        if(valueToRemove == null){return false};
+        let thisHash = this.hash(keyToRemove);
+       
+        let currentNode = this.buckets[thisHash].head;
+        let nodeBefore;
+        //if its the head that matches key
+        if(currentNode.data.key == keyToRemove){
+            if(currentNode.next == null){
+                this.buckets[thisHash] = undefined;
+                return true
+            }
+            this.buckets[thisHash].head = currentNode.next
+            return true
+        }
+
+        //find key in linked list
+        console.log(currentNode);
+        while(currentNode.data.key !== null){
+            if(currentNode.next.data.key == keyToRemove){
+                nodeBefore = currentNode;
+                currentNode = currentNode.next
+                break
+            }
+            currentNode = currentNode.next
+        }
+        console.log("nodeBefore");
+        console.log(nodeBefore);
+        //not before.next = node after
+        let nodeAfter = currentNode.next;
+        console.log("nodeAfter");
+        console.log(nodeAfter);
+        nodeBefore.next = nodeAfter;
+        return true
+    }
+    length(){
+        //cycle through, if undefined count and check size of each list within each bucket
+        let hashLength = this.buckets.length;
+        let count = 0;
+        for(let i=0;i<hashLength;i++){
+            if(this.buckets[i] !== undefined){
+                let listLength = this.buckets[i].size();
+                count = count + listLength;
+            }
+        }
+        return count;
     }
 }
 
