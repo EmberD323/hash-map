@@ -6,8 +6,8 @@ import {LinkedList} from "./linkedlist.js";
 //}
 class HashMap{
     constructor() {
-        //hashMap with 100 buckets
-        let bucketSize = 100; 
+        //hashMap with 10 buckets (will grow if too full)
+        let bucketSize = 16; 
         
         this.buckets = new Array(bucketSize);
       }
@@ -24,10 +24,10 @@ class HashMap{
      
         return hashCode % this.buckets.length //to make hash matach buckets;
     } 
-    checkToGrow(){//if entries go above 0.8*capacity, double capacity.
-        let loadFactor = 0.8;
+    checkToGrow(){//if entries go above 0.75*capacity, double capacity.
+        let loadFactor = 0.75;
         let capacity = this.buckets.length;
-        let numberToGrowAt = capacity * loadFactor;
+        let numberToGrowAt = Math.round(capacity * loadFactor);
         let numberOfEntries = this.length();
         if(numberToGrowAt == numberOfEntries){
             //save previous entries
