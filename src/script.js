@@ -16,6 +16,4 @@ test.set('lion', 'golden')//84
 
 console.log("final HashMap");
 console.log(test);
-
-console.log(test.length());
-
+console.log(test.entries())

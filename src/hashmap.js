@@ -120,6 +120,59 @@ class HashMap{
         }
         return count;
     }
+    clear(){
+        //remove all
+        this.buckets = new Array(100);
+        return
+    }
+    keys(){
+        //returns array with all keys
+        let keyArray = [];
+        let hashLength = this.buckets.length;
+        for(let i=0;i<hashLength;i++){
+            if(this.buckets[i] !== undefined){
+                let currentNode = this.buckets[i].head;
+                console.log(currentNode);
+                while(currentNode !== null){
+                    let thisKey = currentNode.data.key;
+                    keyArray.push(thisKey);
+                    currentNode = currentNode.next
+                }
+            }
+        }
+        return keyArray;
+
+    }
+    values(){
+        //returns array with all keys
+        let valueArray = [];
+        let hashLength = this.buckets.length;
+        for(let i=0;i<hashLength;i++){
+            if(this.buckets[i] !== undefined){
+                let currentNode = this.buckets[i].head;
+                console.log(currentNode);
+                while(currentNode !== null){
+                    let thisValue = currentNode.data.value;
+                    valueArray.push(thisValue);
+                    currentNode = currentNode.next
+                }
+            }
+        }
+        return valueArray;
+
+    }
+    entries(){
+        let entryArray = [];
+        let keyArray = this.keys();
+        let valueArray = this.values();
+        for(let i = 0; i<keyArray.length; i++){
+            let thisEntry = [keyArray[i],valueArray[i]];
+            entryArray.push(thisEntry);
+        }
+        return entryArray
+
+
+    }
 }
 
 
