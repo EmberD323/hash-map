@@ -8,12 +8,7 @@ import {LinkedList} from "./linkedlist.js";
 class HashMap{
     constructor() {
         //hashMap with 100 buckets
-        this.buckets = [];
-        let bucket = new LinkedList();
-        //each bucket is a linked list
-        for (let i=0;i<100;i++){
-            this.buckets.push(bucket);
-        }
+        this.buckets = new Array(100);
       }
 
     hash(key) {
@@ -34,15 +29,21 @@ class HashMap{
     
     set(newKey,newValue){
         let thisHash = this.hash(newKey);
-        let thisBucket = this.buckets[thisHash];
+
+        console.log("bucket is")
+        console.log(this.buckets[thisHash])
+        
         //if this bucket is empty put this in there
-        if(thisBucket.head == null){
+        if(this.buckets[thisHash] == undefined){
+            this.buckets[thisHash] = new LinkedList();
+            this.buckets[thisHash].append({key:newKey,value:newValue});
             console.log("when set method used i was placed in an empty bucket. My data is ")
             console.log({key:newKey,value:newValue})
+            return
         }
 
         //check if linked list had key by moving through linked list while data is not empty
-        let currentNode = thisBucket.head;
+        let currentNode = this.buckets[thisHash].head;
         if(currentNode.data !== null){
             if(currentNode.data.key == newKey){
                 currentNode.data.value = newValue;  
@@ -55,10 +56,13 @@ class HashMap{
         //there has been a collision - add to end of linked list
         console.log("when set method used, there was already something else in my bucket so I joined the linekd list. My data is ")
         console.log({key:newKey,value:newValue}) 
-        thisBucket.append({key:newKey,value:newValue});
+        this.buckets[thisHash].append({key:newKey,value:newValue});
         return
         
 
+    }
+    get(key){
+        //find value assosicated with key
     }
 }
 
