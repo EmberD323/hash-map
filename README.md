@@ -5,8 +5,8 @@ If you change template.html name or script.js name then adjust in webpack.config
 
 terminal scripts:
 npm run dev - webpack serve i.e will host web page on http://localhost:8080/
-npm build - webpack i.e bundle
-npm deploy - "git subtree push --prefix dist origin gh-pages" i.e change git page
+npm run build - webpack i.e bundle
+npm run deploy - "git subtree push --prefix dist origin gh-pages" i.e change git page
 
 deploy correct page:
 1) git branch gh-pages
@@ -16,6 +16,4 @@ deploy correct page:
 npm deploy
 git checkout main
 
-set up .gitignore with:
-node_modules
-dist
+
