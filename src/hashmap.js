@@ -1,5 +1,4 @@
 import {LinkedList} from "./linkedlist.js";
-//console.log(greeting);
 
 //use this when accessing a bucket through an index.Want to throw an error if we try to access an out of bound index
 //if (index < 0 || index >= buckets.length) {
@@ -8,8 +7,11 @@ import {LinkedList} from "./linkedlist.js";
 class HashMap{
     constructor() {
         //hashMap with 100 buckets
-        this.buckets = new Array(100);
+        let bucketSize = 100; 
+        
+        this.buckets = new Array(bucketSize);
       }
+      
 
     hash(key) {
         let hashCode = 0;
@@ -22,8 +24,26 @@ class HashMap{
      
         return hashCode % this.buckets.length //to make hash matach buckets;
     } 
-    set(newKey,newValue){//comeback here and insert grow logic
-
+    checkToGrow(){//if entries go above 0.8*capacity, double capacity.
+        let loadFactor = 0.8;
+        let capacity = this.buckets.length;
+        let numberToGrowAt = capacity * loadFactor;
+        let numberOfEntries = this.length();
+        if(numberToGrowAt == numberOfEntries){
+            //save previous entries
+            let oldHashMap = this.entries();
+            //create new list
+            this.buckets = new Array(2*capacity);
+            //copy old ones to new
+            for (let i=0;i<oldHashMap.length;i++){
+                this.set(oldHashMap[i][0],oldHashMap[i][1]);
+            }
+        }
+    }
+    set(newKey,newValue){
+        
+        //run grow check for capacity
+        this.checkToGrow();
         let thisHash = this.hash(newKey);
         
         //if this bucket is empty put this in there
@@ -88,9 +108,7 @@ class HashMap{
             this.buckets[thisHash].head = currentNode.next
             return true
         }
-
         //find key in linked list
-        console.log(currentNode);
         while(currentNode.data.key !== null){
             if(currentNode.next.data.key == keyToRemove){
                 nodeBefore = currentNode;
@@ -99,12 +117,7 @@ class HashMap{
             }
             currentNode = currentNode.next
         }
-        console.log("nodeBefore");
-        console.log(nodeBefore);
-        //not before.next = node after
         let nodeAfter = currentNode.next;
-        console.log("nodeAfter");
-        console.log(nodeAfter);
         nodeBefore.next = nodeAfter;
         return true
     }
@@ -132,7 +145,6 @@ class HashMap{
         for(let i=0;i<hashLength;i++){
             if(this.buckets[i] !== undefined){
                 let currentNode = this.buckets[i].head;
-                console.log(currentNode);
                 while(currentNode !== null){
                     let thisKey = currentNode.data.key;
                     keyArray.push(thisKey);
@@ -150,7 +162,6 @@ class HashMap{
         for(let i=0;i<hashLength;i++){
             if(this.buckets[i] !== undefined){
                 let currentNode = this.buckets[i].head;
-                console.log(currentNode);
                 while(currentNode !== null){
                     let thisValue = currentNode.data.value;
                     valueArray.push(thisValue);
